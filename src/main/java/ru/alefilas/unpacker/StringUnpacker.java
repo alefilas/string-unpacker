@@ -12,27 +12,31 @@ public class StringUnpacker {
         char[] symbols = arg.toCharArray();
 
         Stack<Integer> numbersOfRepeats = new Stack<>();
-        StringBuilder resultString = new StringBuilder();
-        StringBuilder builder = new StringBuilder();
+        Stack<StringBuilder> builders = new Stack<>();
+        builders.push(new StringBuilder());
 
         for (int i = 0; i < symbols.length; i++) {
 
             char symbol = symbols[i];
 
             if (Character.isDigit(symbol)) {
+                //находим число челиком и добавляем в стек
+                //переводим i в позицию за открывающей скобкой после найденного числа
                 int endOfNumber = findEndOfNumber(symbols, i);
                 numbersOfRepeats.push(Integer.parseInt(arg.substring(i, endOfNumber)));
+
                 i += endOfNumber - i;
+
+                builders.add(new StringBuilder());
+
             } else if (symbol == ']') {
-                resultString.append(repeatString(builder, numbersOfRepeats));
-            } else if (numbersOfRepeats.size() == 0) {
-                resultString.append(symbol);
+                repeatString(builders, numbersOfRepeats.pop());
             } else {
-                builder.append(symbol);
+                builders.peek().append(symbol);
             }
         }
 
-        return resultString.toString();
+        return builders.pop().toString();
     }
 
     private static int findEndOfNumber(char[] symbols, int i) {
@@ -87,17 +91,11 @@ public class StringUnpacker {
         return arg.matches("[a-zA-Z\\d\\[\\]]*");
     }
 
-    private static String repeatString(StringBuilder builder, Stack<Integer> numbersOfRepeats) {
+    private static void repeatString(Stack<StringBuilder> builders, Integer numberOfRepeats) {
+        String repeat = builders.pop()
+                .toString()
+                .repeat(numberOfRepeats);
 
-        String repeat = builder.toString().repeat(numbersOfRepeats.pop());
-
-        builder.setLength(0);
-
-        if (numbersOfRepeats.size() > 0) {
-            builder.append(repeat);
-            return "";
-        } else {
-            return repeat;
-        }
+        builders.peek().append(repeat);
     }
 }

@@ -23,6 +23,9 @@ public class StringUnpackerTest {
         str = StringUnpacker.unpack("11[x]");
         Assert.assertEquals("xxxxxxxxxxx", str);
 
+        str = StringUnpacker.unpack("2[xy2[e]z]");
+        Assert.assertEquals("xyeezxyeez", str);
+
         str = StringUnpacker.unpack("abc");
         Assert.assertEquals("abc", str);
     }
