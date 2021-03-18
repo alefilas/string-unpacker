@@ -21,13 +21,14 @@ public class StringUnpacker {
 
             if (Character.isDigit(symbol)) {
                 //находим число челиком и добавляем в стек
-                //переводим i в позицию за открывающей скобкой после найденного числа
+                //переводим i на открывающую скобку, так чтобы при
+                //следующей итерации начать с содержимого скобки
                 int endOfNumber = findEndOfNumber(symbols, i);
                 numbersOfRepeats.push(Integer.parseInt(arg.substring(i, endOfNumber)));
 
                 i += endOfNumber - i;
 
-                builders.add(new StringBuilder());
+                builders.push(new StringBuilder());
 
             } else if (symbol == ']') {
                 repeatString(builders, numbersOfRepeats.pop());
@@ -64,9 +65,9 @@ public class StringUnpacker {
                 }
 
                 if (Character.isDigit(symbols[i + 1])) {
-                    //переходим к последней цифре числа
+                    //переходим к предпоследней цифре числа
                     int endOfNumber = findEndOfNumber(symbols, i);
-                    i += endOfNumber - i - 1;
+                    i += endOfNumber - i - 2;
                 } else if (symbols[i + 1] != '[') {
                     return false;
                 }

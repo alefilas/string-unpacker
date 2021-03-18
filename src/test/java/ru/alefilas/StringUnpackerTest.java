@@ -44,10 +44,10 @@ public class StringUnpackerTest {
         str = StringUnpacker.unpack("ab[c]");
         Assert.assertEquals("Not valid!", str);
 
-        str = StringUnpacker.unpack("ab[c]");
+        str = StringUnpacker.unpack("2[[x]y]");
         Assert.assertEquals("Not valid!", str);
 
-        str = StringUnpacker.unpack("2[[x]y]");
+        str = StringUnpacker.unpack("111x2[x]");
         Assert.assertEquals("Not valid!", str);
 
         str = StringUnpacker.unpack("2[3[x]y]2s");
